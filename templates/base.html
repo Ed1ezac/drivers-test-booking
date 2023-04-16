@@ -4,8 +4,14 @@
     </head>
     <body>
         <header>
-            <h2><a href="{% url 'dates' %}">Test Dates</a></h2>
+            <h2><a href="{% url 'dates' %}">Test Booking System</a></h2>
         </header>
+        <div>
+            {% if user.is_authenticated %}
+                <h3>Hello {{ user.username }}!</h3>
+                <p><a href="{% url 'logout' %}">Log out</a></p>
+            {% endif %}
+        </div>
         <section>
             {% block content %}
             

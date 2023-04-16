@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Welcome</h2>
+    <div>
+        <p>Welcome to the Driver's License Test Booking Web System.</p>
+        <p><span><a href="accounts/register">Register</a></span> or <span><a href="{% url 'login' %}">Login</a></span> to view available dates for booking a test.</p>
+    </div>
+
+{% endblock content %}
