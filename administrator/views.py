@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView
 
 from .forms import TestDateForm
 
-from .models import TestDate
+#from .models import TestDate
 
 def create_test_date(request):
     if request.method == "POST":
@@ -13,7 +13,7 @@ def create_test_date(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
+            form.save()
             # redirect to a new URL:
             return HttpResponseRedirect("/")
     else:
@@ -21,8 +21,6 @@ def create_test_date(request):
     
     return render(request, "create_date.html", {"form": form})
 
-
-class CreateDateView(CreateView):
-    model = TestDate
-    template_name = 'create_date.html'
-    fields = '__all__'
+def update_test_date(request):
+    if request.method == "POST":
+        #form = 
