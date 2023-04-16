@@ -4,7 +4,11 @@
     </head>
     <body>
         <header>
-            <h2><a href="{% url 'dates' %}">Test Booking System</a></h2>
+            {% if user.is_authenticated %}
+                <h2><a href="{% url 'dates' %}">Test Booking System</a></h2>
+            {% else %}
+                <h2><a href="{% url 'home' %}">Test Booking System</a></h2> 
+            {% endif %}
         </header>
         <div>
             {% if user.is_authenticated %}

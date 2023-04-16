@@ -4,7 +4,11 @@
     <h2>Welcome</h2>
     <div>
         <p>Welcome to the Driver's License Test Booking Web System.</p>
+        {% if user.is_authenticated %}
+        <p>Proceed to the <span><a href="{% url 'dates' %}">Dashboard</a></span> to view available dates for booking a test.</p>
+        {% else %}
         <p><span><a href="accounts/register">Register</a></span> or <span><a href="{% url 'login' %}">Login</a></span> to view available dates for booking a test.</p>
+        {% endif %}
     </div>
 
 {% endblock content %}

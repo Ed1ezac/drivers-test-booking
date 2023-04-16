@@ -38,6 +38,7 @@ LOGOUT_REDIRECT_URL = 'home'
 INSTALLED_APPS = [
     'test_dates.apps.TestDatesConfig',
     'officer.apps.OfficerConfig',
+    'accounts.apps.AccountsConfig',
     'administrator.apps.AdministratorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
