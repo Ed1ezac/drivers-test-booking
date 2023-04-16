@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'new_date' %}">Add Date</a>
+    </div>
+    {% for date in object_list %}
+        <div>
+            <h4>{{ date }}</h4>
+            <p>Max Candidates: {{ date.max_candidates }}</p>
+            <a href="">Register</a>
+            <!--- a href="">Cancel Registration</a -->
+        </div>
+    {% endfor %}
+
+{% endblock content %}
