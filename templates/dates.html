@@ -10,6 +10,8 @@
             <p>Max Candidates: {{ date.max_candidates }}</p>
             <a href="">Register</a>
             <!--- a href="">Cancel Registration</a -->
+            <a href="{% url 'edit_date' date.pk %}">Edit</a>
+            <a href="{% url 'delete_date' date.pk %}">Delete</a>
         </div>
     {% endfor %}
 

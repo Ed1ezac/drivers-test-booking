@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class TestDate(models.Model):
@@ -13,3 +14,6 @@ class TestDate(models.Model):
 
     def __str__(self):
         return self.location +' - '+ self.date.strftime('%d %b %Y - %H:%M %p')
+    
+    def get_absolute_url(self):
+        return reverse('dates')

@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 from .forms import TestDateForm
+from test_dates.models import TestDate
 
-#from .models import TestDate
 
 def create_test_date(request):
     if request.method == "POST":
@@ -23,4 +24,20 @@ def create_test_date(request):
 
 def update_test_date(request):
     if request.method == "POST":
-        #form = 
+        form = TestDateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/")
+    else:
+        #get the model,
+        form = TestDateForm()
+
+class UpdateTestDate(UpdateView):
+    model = TestDate
+    template_name = 'update_date.html'
+    fields = ['location', 'date', 'max_candidates']
+
+class DeleteTestDate(DeleteView):
+    model = TestDate
+    template_name = 'delete_date.html'
+    success_url = reverse_lazy('dates')
