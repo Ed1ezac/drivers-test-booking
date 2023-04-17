@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .my-btn{
+        @apply text-white py-1.5 px-6 tracking-wider font-semibold border hover:text-white focus:ring-2 focus:ring-offset-2;
+    }
+}
