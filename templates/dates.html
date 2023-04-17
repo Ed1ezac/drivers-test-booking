@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
-        <a href="{% url 'new_date' %}">Add Date</a>
+    <div class="flex flex-row justify-end mb-4">
+        <a class="my-btn bg-blue-600 hover:bg-blue-800" href="{% url 'new_date' %}"> +Add Date</a>
     </div>
     {% for date in object_list %}
-        <div>
-            <h4>{{ date }}</h4>
-            <p>Max Candidates: {{ date.max_candidates }}</p>
-            <a href="">Register</a>
-            <!--- a href="">Cancel Registration</a -->
-            <a href="{% url 'edit_date' date.pk %}">Edit</a>
-            <a href="{% url 'delete_date' date.pk %}">Delete</a>
+        <div class="bg-white mb-6 px-8 py-6 rounded shadow max-w-xl">
+            <h4 class="font-semibold text-lg text-gray-900 mb-1">{{ date }}</h4>
+            <p class="text-gray-600">Candidates: 0 / {{ date.max_candidates }}</p>
+            <div class="flex justify-end space-x-4">
+                <a class="text-gray-300 font-medium" href="">Register</a>
+                <!--- a href="">Cancel Registration</a -->
+                <a class="text-gray-600 font-medium hover:text-blue-600" href="{% url 'edit_date' date.pk %}">Edit</a>
+                <a class="text-gray-600 font-medium hover:text-blue-600"href="{% url 'delete_date' date.pk %}">Delete</a>        
+            </div>
+            
         </div>
     {% endfor %}
 

@@ -1,7 +1,11 @@
 {% for field in form %}
-    <div class="">
-        {{ field.label_tag }} 
-        {{ field }}
-        <p>{{ field.errors }}</p>
+    <div class="flex flex-col">
+        <div>
+            {{ field.label_tag }} 
+        </div>
+        <div>
+            {{ field }}
+        </div>
+        <p class="bg-red-200 text-red-600">{{ field.errors }}</p>
     </div>
 {% endfor %}
