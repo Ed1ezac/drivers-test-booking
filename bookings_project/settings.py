@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = 'dates'
 LOGOUT_REDIRECT_URL = 'home'
 # Application definition
+TAILWIND_APP_NAME = 'theme'
 
 INSTALLED_APPS = [
     'test_dates.apps.TestDatesConfig',
@@ -47,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tailwind',
+    'theme',
+    'django_browser_reload'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'bookings_project.urls'
@@ -77,8 +82,13 @@ TEMPLATES = [
     },
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 WSGI_APPLICATION = 'bookings_project.wsgi.application'
 
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

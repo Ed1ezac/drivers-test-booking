@@ -1,22 +1,28 @@
-<html>
+{% load static tailwind_tags %}
+<html lang="en">
     <head>
-        <title>Road Tests Booking</title>
+        <title>Test Booking</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
     </head>
-    <body>
-        <header>
-            {% if user.is_authenticated %}
-                <h2><a href="{% url 'dates' %}">Test Booking System</a></h2>
-            {% else %}
-                <h2><a href="{% url 'home' %}">Test Booking System</a></h2> 
-            {% endif %}
+    <body class="bg-gray-50 font-serif leading-normal tracking-normal">
+        <header class="flex flex-row justify-between items-center mx-16 bg-gray-700 text-white h-16 shadow-md">
+            <div>
+                {% if user.is_authenticated %}
+                    <h2><a href="{% url 'dates' %}">Test Booking System</a></h2>
+                {% else %}
+                    <h2><a href="{% url 'home' %}">Test Booking System</a></h2> 
+                {% endif %}
+            </div>
+            <div>
+                {% if user.is_authenticated %}
+                    <h3>Hello {{ user.username }}!</h3>
+                    <p><a href="{% url 'logout' %}">Log out</a></p>
+                {% endif %}
+            </div>
         </header>
-        <div>
-            {% if user.is_authenticated %}
-                <h3>Hello {{ user.username }}!</h3>
-                <p><a href="{% url 'logout' %}">Log out</a></p>
-            {% endif %}
-        </div>
-        <section>
+        <section class="pt-20">
             {% block content %}
             
             {% endblock content %}
