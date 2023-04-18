@@ -5,8 +5,8 @@
 <h1 class="text-xl font-semibold mb-4">Delete Test Date</h1>
 
     <form  method="post">{% csrf_token %}
-        <p class="font-semibold text-gray-900 mb-1">{{ object }}</p>
-        <p class="mb-4 text-gray-600 max-w-xl">Are you sure you want to delete this schedule along with all its ascociated information? This cannot be reversed.</p>
+        <p class="font-semibold text-gray-900 mb-1">{{ object }} ({{  object.get_test_type_display }} Test)</p>
+        <p class="mb-4 text-gray-600 max-w-xl">Are you sure you want to delete this test schedule along with all its ascociated information? This cannot be reversed.</p>
         <button class="bg-red-600 hover:bg-red-800 text-white px-8 py-1.5" type="submit">Delete</button>
     </form>
 

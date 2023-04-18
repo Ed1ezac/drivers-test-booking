@@ -9,7 +9,7 @@ from .models import TestDate
 class DatesListView(LoginRequiredMixin, ListView):
     model = TestDate
     login_url = 'login'
-    template_name = 'dates.html'
+    template_name = 'test_dates/dates_list.html'
 
 class WelcomePage(TemplateView):
     template_name = 'home.html'
@@ -19,10 +19,11 @@ class DateBooking():
     def user_books_test(request, pk):
         #get date by id
         date = TestDate.objects.get(id=pk)
-        #add user model
+        #check if maximum candidates not reached
         if len(date.candidates.all()) < date.max_candidates:
+            #add user model
             date.candidates.add(request.user)
-            #return back with feedback message
+            #return back with feedback messages
             messages.success(request, 'You have successfully booked the test.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates')) 
         else:

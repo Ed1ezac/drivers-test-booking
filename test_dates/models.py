@@ -5,12 +5,20 @@ from users.models import CustomUser
 
 #Our models here.
 class TestDate(models.Model):
+    TEST_TYPES = [
+        ('WR', 'Written'),
+        ('OB', 'Obstacle'),
+        ('RD', 'Road'),
+    ]
+    #location of test
     location = models.CharField(max_length=100)
-    #date and time
+    #date and time of test
     date_and_time = models.DateTimeField()
     #type of test
-    #max_no_candidates
+    test_type = models.CharField(max_length=2, choices=TEST_TYPES)
+    #max number of candidates
     max_candidates = models.PositiveSmallIntegerField()
+    #actual candidates
     candidates = models.ManyToManyField(CustomUser)
 
     def __str__(self):
