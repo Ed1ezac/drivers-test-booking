@@ -1,7 +1,7 @@
 #from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView
 from django.contrib import messages
 
 from .models import TestDate
@@ -13,11 +13,6 @@ class DatesListView(LoginRequiredMixin, ListView):
 
 class WelcomePage(TemplateView):
     template_name = 'home.html'
-
-class TestDateDetails(DetailView):
-    model = TestDate
-    template_name = 'date_details.html'
-
 
 class DateBooking():
     #user books test
