@@ -7,7 +7,7 @@
         {% if user.is_authenticated %}
         <p>Proceed to the <span><a class="underline text-blue-500" href="{% url 'dates' %}">Dashboard</a></span> to view available dates for booking a test.</p>
         {% else %}
-        <p><span><a class="underline text-blue-500" href="accounts/register">Register</a></span> or <span><a class="underline text-blue-500" href="{% url 'login' %}">Login</a></span> to view available dates for booking a test.</p>
+        <p><span><a class="underline text-blue-500" href="{% url 'register' %}">Register</a></span> or <span><a class="underline text-blue-500" href="{% url 'login' %}">Login</a></span> to view available dates for booking a test.</p>
         {% endif %}
     </div>
 

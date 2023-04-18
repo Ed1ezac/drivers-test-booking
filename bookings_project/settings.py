@@ -18,6 +18,7 @@ class CustomFormRenderer(TemplatesSetting):
 FORM_RENDERER = "bookings_project.settings.CustomFormRenderer"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,12 +36,13 @@ LOGIN_REDIRECT_URL = 'dates'
 LOGOUT_REDIRECT_URL = 'home'
 # Application definition
 TAILWIND_APP_NAME = 'theme'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
     'test_dates.apps.TestDatesConfig',
     'officer.apps.OfficerConfig',
-    'accounts.apps.AccountsConfig',
     'administrator.apps.AdministratorConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.forms',

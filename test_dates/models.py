@@ -1,19 +1,20 @@
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
+from users.models import CustomUser
+
+#Our models here.
 class TestDate(models.Model):
-    #location
     location = models.CharField(max_length=100)
-    #date
-    date = models.DateTimeField()
+    #date and time
+    date_and_time = models.DateTimeField()
     #type of test
-    #no_of_candidates
     #max_no_candidates
     max_candidates = models.PositiveSmallIntegerField()
+    candidates = models.ManyToManyField(CustomUser)
 
     def __str__(self):
-        return self.location +' - '+ self.date.strftime('%d %b %Y - %H:%M %p')
+        return self.location +' - '+ self.date_and_time.strftime('%d %b %Y - %H:%M %p')
     
     def get_absolute_url(self):
         return reverse('dates')

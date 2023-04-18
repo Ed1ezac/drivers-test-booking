@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -22,22 +23,24 @@ def create_test_date(request):
     
     return render(request, "create_date.html", {"form": form})
 
-def update_test_date(request):
-    if request.method == "POST":
-        form = TestDateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/")
-    else:
-        #get the model,
-        form = TestDateForm()
-
-class UpdateTestDate(UpdateView):
+class CreateTestDate(LoginRequiredMixin, CreateView):
     model = TestDate
+    login_url = 'login'
     template_name = 'update_date.html'
-    fields = ['location', 'date', 'max_candidates']
+    success_url = reverse_lazy('dates')
+    fields = ['location', 'date_and_time', 'max_candidates']
 
-class DeleteTestDate(DeleteView):
+
+class UpdateTestDate(LoginRequiredMixin, UpdateView):
     model = TestDate
+    login_url = 'login'
+    template_name = 'update_date.html'
+    success_url = reverse_lazy('dates')
+    fields = ['location', 'date_and_time', 'max_candidates']
+
+class DeleteTestDate(LoginRequiredMixin, DeleteView):
+    model = TestDate
+    login_url = 'login'
     template_name = 'delete_date.html'
     success_url = reverse_lazy('dates')
+    fields = ['location', 'date_and_time']
