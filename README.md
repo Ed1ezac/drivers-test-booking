@@ -35,10 +35,20 @@ Each abstraction is a mini-app with its own `view.py`, `urls.py` and `models.py`
 - If you have Visual Studio Code IDE you can use its built-in command processor by clicking `Terminal`->`New Terminal` on the top ribbon menu
 - Otherwise fire up your console app *(e.g command prompt on windows)* and navigate to the project folder 
 - Run the commands: `pipenv shell`
-- Install css dependencies: `python manage.py tailwind install`
+- `pipenv install django==3.2`
+- `python -m pip install django-tailwind`
+- `pip install django-browser-reload` : for browser refreshing
+- `python manage.py tailwind install` : for tailwind css dependencies
+- `python manage.py tailwind start`
 - `python manage.py migrate`
 - Serve the application by using the command: `python manage.py runserver`
 - Navigate to http://localhost:8000 to view it
+
+To get started, create a superuser by doing:
+- First quit server if its running with `Ctrl+c`
+- run `python manage.py createsuperuser`
+- follow onscreen instruction until you see `Superuser created successfully.` message
+- navigate to http://localhost:8000/admin/ and login with the credentials created above
 
 ## Testing
 In order to test the app you can use Django built in testing:
