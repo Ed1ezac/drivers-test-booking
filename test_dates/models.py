@@ -26,3 +26,15 @@ class TestDate(models.Model):
     
     def get_absolute_url(self):
         return reverse('dates')
+
+
+class TestResult(models.Model):
+    RESULTS = [
+        ('P', 'Pass'),
+        ('F', 'Fail'),
+        ('X', 'No Show'),
+    ]
+
+    test = models.OneToOneField(TestDate)
+    user = models.ManyToOneField(CustomUser)
+    test_result = models.CharField(max_length=1, choices=RESULTS)

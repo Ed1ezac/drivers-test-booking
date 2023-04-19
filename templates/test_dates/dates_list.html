@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if perms.test_dates.view_testdate %}
+    {% if perms.test_dates.add_testdate %}
     <div class="flex flex-row justify-end mb-4">
         <a class="my-btn mr-4 bg-gray-600 hover:bg-gray-800" href="{% url 'new_date' %}"> Create Groups</a>
         <a class="my-btn bg-blue-600 hover:bg-blue-800" href="{% url 'new_date' %}"> +Add Date</a>
