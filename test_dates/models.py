@@ -35,6 +35,6 @@ class TestResult(models.Model):
         ('X', 'No Show'),
     ]
 
-    test = models.OneToOneField(TestDate)
-    user = models.ManyToOneField(CustomUser)
+    user = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
+    test = models.OneToOneField(TestDate, on_delete = models.DO_NOTHING)
     test_result = models.CharField(max_length=1, choices=RESULTS)
