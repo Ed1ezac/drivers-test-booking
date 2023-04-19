@@ -35,7 +35,6 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
     'test_dates.apps.TestDatesConfig',
-    'officer.apps.OfficerConfig',
     'administrator.apps.AdministratorConfig',
     'users.apps.UsersConfig',
     'django.contrib.admin',
