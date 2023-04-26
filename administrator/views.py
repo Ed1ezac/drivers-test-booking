@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import (AccessMixin,
 
 from .forms import TestDateForm
 from test_dates.models import TestDate
+from test_dates.models import TestApplication, TestResult
 
 class CreateTestDate(LoginRequiredMixin, 
     PermissionRequiredMixin, AccessMixin, CreateView):
@@ -64,6 +65,31 @@ class DeleteTestDate(LoginRequiredMixin,
         messages.error(self.request, 'Sorry, you are not authorized for that.')
         return HttpResponseRedirect(self.request.META.get('HTTP_REFERER', '/dates'))
 
+def approve_candidate(request, pk):
+    #user->test_applications->appove
+    app = TestApplication.objects.get(id=pk)
+    app.application_status = 'A'
+    app.save()
+    #create a notification obj 
+    Notification.objects.create(user=app.user, text="Your Test booking has been approved!")
+    #messages.success(request, app.user.username +' has been approved for the test.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
+
+def reject_candidate(request, pk):
+    app = TestApplication.objects.get(id=pk)
+    app.application_status = 'R'
+    app.save()
+    #return back
+    messages.error(request, app.user.username +' has been rejected for the test.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
+
+def add_result_pass(request):
+    pass
+
+def add_result_fail(request):
+    pass
+
+
 def create_groups_and_perms(request):
     #groups
     client, created = Group.objects.get_or_create(name="Client")
@@ -93,5 +119,5 @@ def create_groups_and_perms(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
 #In template
-#{{ user.groups.all.0 }}
+#{{ user.groups }}
 #{{ perms.app_name }}
