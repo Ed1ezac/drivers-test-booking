@@ -17,7 +17,8 @@ This system was made using the Django framework, a python framework for web syst
 ## Requirements
 If you intend to make additions to this project you need to meet the following (Minimum requirements):
 - Python V3.7.9 
-- pip 23.0.1
+- pip V23.0.1
+- nodejs V14.16.0
 
 ## Architecture & Directories
 This project's architecture follows the Django framework architecture and directory structure. The root folder contains 5 folders:
@@ -34,6 +35,11 @@ Each abstraction is a mini-app with its own `view.py`, `urls.py` and `models.py`
 - Download and unzip the project
 - If you have Visual Studio Code IDE you can use its built-in command processor by clicking `Terminal`->`New Terminal` on the top ribbon menu
 - Otherwise fire up your console app *(e.g command prompt on windows)* and navigate to the project folder 
+
+Before proceeding with the steps below, make sure you configure your nodejs 
+path in the project in `bookings_project>settings.py` file. The setting is: 
+`NPM_BIN_PATH`: mine is `'C:/Program Files/nodejs/npm.cmd'` but the default is `'C:/Program Files/nodejs/npm.cmd'` for most Windows machines.
+
 - Run the commands: `pipenv shell`
 - `pipenv install django==3.2`
 - `python -m pip install django-tailwind`
