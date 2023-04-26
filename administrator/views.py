@@ -71,8 +71,8 @@ def approve_candidate(request, pk):
     app.application_status = 'A'
     app.save()
     #create a notification obj 
-    Notification.objects.create(user=app.user, text="Your Test booking has been approved!")
-    #messages.success(request, app.user.username +' has been approved for the test.')
+    Notification.objects.create(user=app.user, message="Your Test booking has been approved!")
+    messages.success(request, app.user.username +' has been approved for the test.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
 def reject_candidate(request, pk):
@@ -80,7 +80,8 @@ def reject_candidate(request, pk):
     app.application_status = 'R'
     app.save()
     #return back
-    messages.error(request, app.user.username +' has been rejected for the test.')
+    #messages.error(request, app.user.username +' has been rejected for the test.')
+    Notification.objects.create(user=app.user, message="Your Test booking has been rejected!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
 def add_result_pass(request):

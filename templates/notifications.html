@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if object_list %}
+        <h3 class="text-lg font-semibold text-gray-900 underline mb-8">Notifications</h3>
+        {% for notif in object_list %}
+            <div class="bg-white p-2 max-w-5xl mb-3 rounded-sm">
+                <p class="text-sm text-gray-500">{{ notif.message }}</p>
+                <p class="text-sm text-gray-500">{{ notif.timestamp }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="mt-24 text-lg text-center text-gray-600">No Notifications available...</p>
+    {% endif %}
+
+{% endblock content %}
