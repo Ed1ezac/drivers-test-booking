@@ -6,6 +6,9 @@ from .views import (
     TestDateDetails,
     reject_candidate,
     approve_candidate,
+    add_result_pass,
+    add_result_fail,
+    delete_candidate_application,
     create_groups_and_perms)
 
 
@@ -18,4 +21,8 @@ urlpatterns = [
     #applications
     path('application/<int:pk>/reject', reject_candidate, name='reject_app'),
     path('application/<int:pk>/approve', approve_candidate, name='approve_app'),
+    path('application/<int:pk>/delete', delete_candidate_application, name='delete_app'),
+    #results
+    path('application/<int:pk>/pass', add_result_pass, name='pass_app'),
+    path('application/<int:pk>/fail', add_result_fail, name='fail_app')
 ]

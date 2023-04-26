@@ -10,9 +10,9 @@
         <header class="flex flex-row justify-between items-center px-16 bg-gray-700 text-white h-16 shadow-md">
             <div>
                 {% if user.is_authenticated %}
-                    <h2 class="font-semibold"><a href="{% url 'dates' %}">Test Booking System</a></h2>
+                    <h2 class="font-semibold text-xl"><a href="{% url 'dates' %}">Test Booking System</a></h2>
                 {% else %}
-                    <h2 class="font-semibold"><a href="{% url 'home' %}">Test Booking System</a></h2> 
+                    <h2 class="font-semibold text-xl"><a href="{% url 'home' %}">Test Booking System</a></h2> 
                 {% endif %}
             </div>
             <div>

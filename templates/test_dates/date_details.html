@@ -10,24 +10,51 @@
         <div class="flex flex-col max-w-2xl">
             {% for item in object.testapplication_set.all %}
                 <div class="bg-white mb-5 px-4 py-2 rounded shadow">
-                    <div class="flex justify-between items-baseline">
-                        <h3 class="font-semibold text-lg text-gray-900">{{ item.user }}</h3>
+                        <div class="flex justify-between items-baseline">
                             <div>
-                                {% if item.application_status != 'A'%}
+                                <h3 class="font-semibold text-lg text-gray-900">{{ item.user }}</h3>
+                            </div>
+                            {% if not item.testresult or item.testresult.test_result == 'X' %}
+                            <div>
+                                {% if item.application_status != 'A' %}
                                 <a class="border border-gray-300 py-1 px-3 text-xs font-medium hover:bg-green-600 hover:border-green-400 hover:text-white" href="{% url 'approve_app' item.pk %}">Approve</a>
                                 {% endif %}
                                 {% if item.application_status != 'R' %}
                                 <a class="border border-gray-300 py-1 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'reject_app' item.pk %}">Reject</a>
                                 {% endif %}
+                                {% if item.testresult.test_result is not 'P' or 'F' %}
+                                    <a class="border border-gray-300 py-1 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'delete_app' item.pk %}">Delete</a>
+                                {% endif %}
                             </div>
+                            {% endif %}
                         </div>
-                    <p class="text-sm text-gray-600">{{ item.get_application_status_display }}</p>
+                        <div class="flex justify-between mt-5">
+                            <div class="flex space-x-5">
+                                <p class="text-sm text-gray-600">{{ item.get_application_status_display }}</p>
+                            
+                                {% if item.testresult.test_result == 'P' %}
+                                <span class="rounded-full py-0.5 px-3 text-xs font-semibold bg-green-200 text-green-600">Passed</span>
+                                {% elif item.testresult.test_result == 'F' %}
+                                <span class="rounded-full py-0.5 px-2 text-xs font-semibold bg-red-200 text-red-600">Failed</span>
+                                {% endif %}
+                            </div>
+                            {% if item.testresult  %}
+                            <div class="flex space-x-2">
+                                {% if item.testresult.test_result != 'P' %}
+                                <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-green-600 hover:border-green-400 hover:text-white" href="{% url 'pass_app' item.pk %}">Pass</a>
+                                {% endif %}
+                                {% if item.testresult.test_result != 'F' %}
+                                <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'fail_app' item.pk %}">Fail</a>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    
                 </div>
             {% endfor %}
         </div>
     {% else %}
         <p class="text-lg text-gray-600">There are no registered candidates yet...</p>
-    {% endif %}
-    
+    {% endif %} 
 
 {% endblock content %}

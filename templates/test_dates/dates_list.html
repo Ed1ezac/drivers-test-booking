@@ -1,38 +1,107 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if perms.test_dates.add_testdate %}
-    <div class="bg-gray-300 flex flex-row justify-center items-center mb-4 py-3 space-x-4">
-        <a class="font-semibold tracking-wide hover:text-white" href="{% url 'new_date' %}">+Add Date</a>
-        <a class="font-semibold tracking-wide hover:text-white" href="{% url 'new_date' %}">Test results</a>
-        <a class="font-semibold tracking-wide hover:text-white" href="#">Users</a>
+    <!--- Header --->
+    <div class="bg-white flex flex-col divide-y divide-gray-300 rounded shadow mb-8 max-w-5xl">
+        <div class="flex justify-between p-4">
+            <div class="flex items-center">
+                <div>
+                    <svg class="w-20 h-20 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>                      
+                </div>
+                <div class="flex flex-col ml-4">
+                    <p class="text-xs text-gray-500">Welcome back,</p>
+                    <h3 class="font-bold text-lg">{{ user.username }}</h3>
+                    {% if perms.test_dates.add_testdate %}
+                    <p class="text-gray-500 text-xs">Administrator</p>
+                    {% elif perms.test_dates.view_testdate %}
+                    <p class="text-gray-500 text-xs">Officer</p>
+                    {% else %}
+                    <p class="text-gray-500 text-xs">Candidate</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex justify-center flex-col">
+                <p class="text-gray-500 text-xs">Progress,</p>
+                <h3 class="font-medium text-2xl">{{ user.get_progress_display }}</h3>
+                <p class="text-gray-500 text-xs">Stage {{ user.progress }} of 3</p>
+            </div>
+        </div>
+        {% if perms.test_dates.add_testdate %}
+        <div class="grid grid-cols-3 divide-x divide-gray-300">
+            <div class="bg-gray-50 text-center py-2 rounded-bl">
+                <a class="tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'new_date' %}">+Add Date</a>
+            </div>
+            <div class="bg-gray-50 text-center py-2">
+                <a class=" tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'new_date' %}">Test Results</a>
+            </div>
+            <div class="bg-gray-50 text-center py-2 rounded-br">
+                <a class="tracking-wide text-gray-600 hover:text-blue-500" href="#">Manage Users</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="grid grid-cols-2 divide-x divide-gray-300">
+            <div class="bg-gray-50 text-center py-2 rounded-bl">
+                <a class="tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'my_dates' %}">My Tests</a>
+            </div>
+            <div class="bg-gray-50 text-center py-2">
+                <a class=" tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'new_date' %}">My Test Results</a>
+            </div>
+        </div>
+        {% endif %}
         
     </div>
-    {% endif %}
     {% if object_list %}
         {% for date in object_list %}
             <div class="bg-white mb-6 px-8 py-6 rounded shadow max-w-xl">
-                {% if perms.test_dates.view_testdate %}
-                    <a class="font-semibold text-lg text-gray-900 mb-1 hover:underline" href="{% url 'date_details' date.pk %}">{{ date }}</a>
-                {% else %}
-                    <h4 class="font-semibold text-lg text-gray-900 mb-1">{{ date }}</h4>
-                {% endif %}
-                <p class="text-gray-600">Candidates: {{ date.testapplication_set.all|length }} / {{ date.max_candidates }}</p>
-                <div class="flex justify-between items-baseline space-x-4">
-                    <div class="text-xs font-bold text-gray-600">
-                        {{ date.get_test_type_display }} Test
-                       {{ user.status }}
+                <div class="flex justify-between items-baseline">
+                    <div>
+                        {% if perms.test_dates.view_testdate %}
+                            <a class="font-semibold text-lg text-gray-900 mb-1 hover:underline" href="{% url 'date_details' date.pk %}">{{ date }}</a>
+                        {% else %}
+                            <h4 class="font-semibold text-lg text-gray-900 mb-1">{{ date }}</h4>
+                        {% endif %}
                     </div>
                     <div>
                         {% for app in date.testapplication_set.all %}
                             {% if user == app.user %}
-                                <a class="mx-2 text-gray-600 font-medium hover:text-blue-600 hover:underline" href="{% url 'cancel_booking' date.pk %}">Cancel Boooking</a>
+                                {% if app.application_status == 'P' %}
+                                <span class="bg-gray-100 text-gray-700 text-xs px-1.5 py-0.5 font-semibold rounded-full">Pending</span>
+                                {% elif app.application_status == 'A' %}
+                                <span class="bg-green-200 text-green-700 text-xs px-1.5 py-0.5 font-semibold rounded-full">Approved</span>
+                                {% elif app.application_status == 'R' %}
+                                <span class="bg-red-100 text-red-700 text-xs px-1.5 py-0.5 font-semibold rounded-full">Rejected</span>
+                                {% endif %}
                             {% else %}
                             {% endif %}
                         {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600">Candidates: {{ date.testapplication_set.all|length }} / {{ date.max_candidates }}</p>
+                <div class="flex justify-between items-baseline space-x-4">
+                    <div class="text-xs font-bold text-gray-600">
+                        {{ date.get_test_type_display }} Test
+                        
+                    </div>
+                    <div>
+                        {% for app in date.testapplication_set.all %}
+                            {% if user == app.user %}
+                                    {% if  app.application_status != 'R' and app.testresult.test_result == 'X' %}
+                                        <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600 hover:underline" href="{% url 'cancel_booking' date.pk %}">Cancel Boooking</a>
+                                    {% endif %}
+                                    {% if app.testresult.test_result == 'P' %}
+                                        <span class="rounded-full py-0.5 px-3 text-xs font-semibold bg-green-200 text-green-600">Passed</span>
+                                    {% elif app.testresult.test_result == 'F' %}
+                                        <span class="rounded-full py-0.5 px-2 text-xs font-semibold bg-red-200 text-red-600">Failed</span>
+                                    {% endif %}
+                                {% else %}
+                            {% endif %}
+                        {% endfor %}
+                        <!-- Registration --->
                         {% if user.status == 'F' and date.test_type == user.progress %}
                             {% if date.testapplication_set.all|length < date.max_candidates %}
-                            <a class="mx-2 text-gray-600 font-medium hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
+                                <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
                             {% endif %}
                         {% endif %}
                         

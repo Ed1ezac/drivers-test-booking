@@ -10,8 +10,8 @@ from django.contrib.auth.mixins import (AccessMixin,
 
 
 from .forms import TestDateForm
-from test_dates.models import TestDate
-from test_dates.models import TestApplication, TestResult
+from test_dates.models import TestApplication,TestResult,TestDate
+from users.models import Notification 
 
 class CreateTestDate(LoginRequiredMixin, 
     PermissionRequiredMixin, AccessMixin, CreateView):
@@ -70,26 +70,67 @@ def approve_candidate(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.application_status = 'A'
     app.save()
+    #Result
+    TestResult.objects.create(user=app.user, application=app, test_result='X')
     #create a notification obj 
     Notification.objects.create(user=app.user, message="Your Test booking has been approved!")
     messages.success(request, app.user.username +' has been approved for the test.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
+def delete_candidate_application(request, pk):
+    app = TestApplication.objects.get(id=pk)
+    app.user.status = 'F'
+    #delete the results
+    res = TestResult.objects.filter(user=app.user, application = app)
+    if res is not None:
+        res.delete()
+    app.delete()
+    messages.error(request, 'Application has been deleted.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
+
+
 def reject_candidate(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.application_status = 'R'
     app.save()
+    #delete the results
+    res = TestResult.objects.filter(user=app.user, application = app)
+    if res is not None:
+        res.delete()
     #return back
-    #messages.error(request, app.user.username +' has been rejected for the test.')
+    messages.error(request, app.user.username +' has been rejected for the test.')
     Notification.objects.create(user=app.user, message="Your Test booking has been rejected!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
-def add_result_pass(request):
-    pass
+def add_result_pass(request, pk):
+    app = TestApplication.objects.get(id=pk)
+    app.testresult.test_result = 'P'
+    app.testresult.save()
+    #increase progress
+    if app.user.progress == '1':
+        app.user.progress = '2'
+    else:
+        app.user.progress = '3'
+    #status
+    app.user.status = 'F'
+    app.user.save()
 
-def add_result_fail(request):
-    pass
+    messages.success(request, app.user.username +' has been graded a PASS for the test.')
+    Notification.objects.create(user=app.user, message="Congratulations! You have passed the test!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
+    
 
+def add_result_fail(request, pk):
+    app = TestApplication.objects.get(id=pk)
+    app.testresult.test_result = 'F'
+    app.testresult.save()
+    #
+    app.user.status = 'F'
+    app.user.save()
+    #
+    messages.error(request, app.user.username +' has been graded a FAIL for the test.')
+    Notification.objects.create(user=app.user, message="You have failed the test!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
 def create_groups_and_perms(request):
     #groups

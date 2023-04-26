@@ -18,8 +18,6 @@ class TestDate(models.Model):
     test_type = models.CharField(max_length=2, choices=TEST_TYPES)
     #max number of candidates
     max_candidates = models.PositiveSmallIntegerField()
-    #actual candidates
-    #applications = models.ManyToManyField(TestApplication)
 
     def __str__(self):
         return self.location +' - '+ self.date_and_time.strftime('%d %b %Y - %H:%M %p')
@@ -51,8 +49,7 @@ class TestResult(models.Model):
     ]
 
     user = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
-    test = models.ForeignKey(TestDate, on_delete = models.CASCADE)
-    #application_status = models.ForeignKey(TestApplication, on_delete = models.CASCADE)
+    application = models.OneToOneField(TestApplication, on_delete = models.CASCADE, primary_key=True,)
     test_result = models.CharField(max_length=1, choices=RESULTS)
 
     @classmethod

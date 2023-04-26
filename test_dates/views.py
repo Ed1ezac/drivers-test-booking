@@ -24,7 +24,7 @@ class MyDatesListView(LoginRequiredMixin, ListView):
     template_name = 'test_dates/my_dates_list.html'
 
     def get_object(self, queryset=None):
-        return TestDate.objects.filter(user=self.request.user)
+        return TestDate.objects.filter(testapplication__user__in=[self.request.user])
 
 class WelcomePage(TemplateView):
     template_name = 'home.html'
