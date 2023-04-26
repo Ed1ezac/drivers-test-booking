@@ -3,6 +3,22 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
-    #
-    pass
+    STATUS = [
+        ('A', 'Applied'),
+        ('F', 'Free'),        
+    ]
 
+    STAGES = [
+        ('1', 'Theory'),
+        ('2', 'Obstacle'),
+        ('3', 'Road'),
+    ]
+
+    status = models.CharField(max_length=1, choices=STATUS)
+    progress = models.CharField(max_length=1, choices=STAGES)
+
+class Notification(models.Model):
+    is_read = models.BooleanField(default=False)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

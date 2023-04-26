@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.views.generic import CreateView
 
 from .forms import CustomUserCreationForm
+from .models import Notification
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -15,4 +16,7 @@ class SignUpView(CreateView):
         # add self.object to the group
         client_group, created = Group.objects.get_or_create(name="Client")
         self.object.groups.add(client_group)
+        self.status = 'F' #for FREE
+        #Progress, Notification
+        self.progress = '1'
         return response

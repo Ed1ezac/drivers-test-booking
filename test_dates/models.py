@@ -6,9 +6,9 @@ from users.models import CustomUser
 #Our models here.
 class TestDate(models.Model):
     TEST_TYPES = [
-        ('WR', 'Written'),
-        ('OB', 'Obstacle'),
-        ('RD', 'Road'),
+        ('1', 'Written'),
+        ('2', 'Obstacle'),
+        ('3', 'Road'),
     ]
     #location of test
     location = models.CharField(max_length=100)
@@ -19,7 +19,7 @@ class TestDate(models.Model):
     #max number of candidates
     max_candidates = models.PositiveSmallIntegerField()
     #actual candidates
-    candidates = models.ManyToManyField(CustomUser)
+    #applications = models.ManyToManyField(TestApplication)
 
     def __str__(self):
         return self.location +' - '+ self.date_and_time.strftime('%d %b %Y - %H:%M %p')
@@ -27,6 +27,21 @@ class TestDate(models.Model):
     def get_absolute_url(self):
         return reverse('dates')
 
+class TestApplication(models.Model):
+    STATUS = [
+        ('P', 'Pending'),
+        ('A', 'Approved'),
+        ('R', 'Rejected'),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
+    test = models.ForeignKey(TestDate, on_delete = models.CASCADE)
+    application_status = models.CharField(max_length = 1, choices = STATUS)
+
+    @classmethod
+    def create(cls, user, test, status):
+        application = cls(user = user, test = test, application_status = status)
+        return application
 
 class TestResult(models.Model):
     RESULTS = [
@@ -36,5 +51,11 @@ class TestResult(models.Model):
     ]
 
     user = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
-    test = models.OneToOneField(TestDate, on_delete = models.DO_NOTHING)
+    test = models.ForeignKey(TestDate, on_delete = models.CASCADE)
+    #application_status = models.ForeignKey(TestApplication, on_delete = models.CASCADE)
     test_result = models.CharField(max_length=1, choices=RESULTS)
+
+    @classmethod
+    def create(cls, user, test, res):
+        application = cls(user = user, test = test, test_result = res)
+        return application
