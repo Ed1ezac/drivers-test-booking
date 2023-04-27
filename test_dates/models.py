@@ -14,10 +14,12 @@ class TestDate(models.Model):
     location = models.CharField(max_length=100)
     #date and time of test
     date_and_time = models.DateTimeField()
-    #type of test
     test_type = models.CharField(max_length=2, choices=TEST_TYPES)
-    #max number of candidates
     max_candidates = models.PositiveSmallIntegerField()
+
+    def user_has_applied(self, user):
+        return self.testapplication_set.filter(user=self.request.user)
+
 
     def __str__(self):
         return self.location +' - '+ self.date_and_time.strftime('%d %b %Y - %H:%M %p')

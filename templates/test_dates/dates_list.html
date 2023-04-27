@@ -103,11 +103,12 @@
                         <!-- Registration --->
                         {% if user.status == 'F' and date.test_type == user.progress %}
                             {% if date.testapplication_set.all|length < date.max_candidates %}
+                                    {% user_has_applied_for_test date user as num %}
+                                    {% if num != 1 %}
                                     <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
-                            {% endif %}
+                                    {% endif %}    
+                                {% endif %}
                         {% endif %}
-                        
-                        {{ user_has_applied_for_test date user }}
 
                         {% if perms.test_dates.delete_testdate %}
                         <a class="mx-2 text-gray-600 font-medium hover:text-blue-600" href="{% url 'edit_date' date.pk %}">Edit</a>
