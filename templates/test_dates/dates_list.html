@@ -28,7 +28,11 @@
             <div class="flex justify-center flex-col">
                 <p class="text-gray-500 text-xs">Progress,</p>
                 <h3 class="font-medium text-2xl">{{ user.get_progress_display }}</h3>
+                {% if user.progress != '4' %}
                 <p class="text-gray-500 text-xs">Stage {{ user.progress }} of 3</p>
+                {% else %}
+                <p class="text-gray-500 text-xs">Congratulations Driver!</p>
+                {% endif %}
             </div>
         </div>
         {% if perms.test_dates.add_testdate %}

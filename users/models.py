@@ -12,6 +12,7 @@ class CustomUser(AbstractUser):
         ('1', 'Theory'),
         ('2', 'Obstacle'),
         ('3', 'Road'),
+        ('4', 'Done'),
     ]
 
     status = models.CharField(max_length=1, choices=STATUS)

@@ -109,8 +109,10 @@ def add_result_pass(request, pk):
     #increase progress
     if app.user.progress == '1':
         app.user.progress = '2'
-    else:
+    elif app.user.progress == '2':
         app.user.progress = '3'
+    else:
+        app.user.progress = '4'
     #status
     app.user.status = 'F'
     app.user.save()
