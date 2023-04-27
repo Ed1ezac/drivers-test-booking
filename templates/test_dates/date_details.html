@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<section class="pt-8 px-16">
     <h3 class="text-xl font-semibold text-gray-900 mb-5">{{ object }}</h3>
     <p class="font-medium text-gray-600 mb-2">Test type: Written</p>
     <p class="font-medium text-gray-600 mb-8">Max Candidates: {{ object.max_candidates }}</p>
@@ -38,15 +38,17 @@
                                 <span class="rounded-full py-0.5 px-2 text-xs font-semibold bg-red-200 text-red-600">Failed</span>
                                 {% endif %}
                             </div>
-                            {% if item.testresult  %}
-                            <div class="flex space-x-2">
-                                {% if item.testresult.test_result != 'P' %}
-                                <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-green-600 hover:border-green-400 hover:text-white" href="{% url 'pass_app' item.pk %}">Pass</a>
+                            {% if perms.test_dates.delete_testdate %}
+                                {% if item.testresult  %}
+                                <div class="flex space-x-2">
+                                    {% if item.testresult.test_result != 'P' %}
+                                    <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-green-600 hover:border-green-400 hover:text-white" href="{% url 'pass_app' item.pk %}">Pass</a>
+                                    {% endif %}
+                                    {% if item.testresult.test_result != 'F' %}
+                                    <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'fail_app' item.pk %}">Fail</a>
+                                    {% endif %}
+                                </div>
                                 {% endif %}
-                                {% if item.testresult.test_result != 'F' %}
-                                <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'fail_app' item.pk %}">Fail</a>
-                                {% endif %}
-                            </div>
                             {% endif %}
                         </div>
                     
@@ -56,5 +58,5 @@
     {% else %}
         <p class="text-lg text-gray-600">There are no registered candidates yet...</p>
     {% endif %} 
-
+</section>
 {% endblock content %}

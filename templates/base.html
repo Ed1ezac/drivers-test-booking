@@ -5,9 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		{% tailwind_css %}
+        
+        {% block styles %}
+        {% endblock styles %}
     </head>
-    <body class="bg-gray-50 font-sans leading-normal tracking-normal">
-        <header class="flex flex-row justify-between items-center px-16 bg-gray-700 text-white h-16 shadow-md">
+    <body class="bg-gray-50 leading-normal font-body tracking-normal">
+        <header class="flex flex-row justify-between items-center px-16 bg-blue-900 text-white h-16 shadow-md">
             <div>
                 {% if user.is_authenticated %}
                     <h2 class="font-semibold text-xl"><a href="{% url 'dates' %}">Test Booking System</a></h2>
@@ -31,11 +34,11 @@
                             </a>
                         </div>
                     </div>
-                    <a class="my-btn border border-gray-400 hover:bg-gray-600" href="{% url 'logout' %}">Log out</a>
+                    <a class="my-btn border border-blue-400 hover:bg-blue-600" href="{% url 'logout' %}">Log out</a>
                 </div>
                 {% else %}
                 <div class="flex space-x-4">
-                    <p><a class="my-btn border border-gray-400 hover:bg-gray-600" href="{% url 'login' %}">Log in</a></p>
+                    <p><a class="my-btn border border-blue-400 hover:bg-blue-600" href="{% url 'login' %}">Log in</a></p>
                     <p><a class="my-btn bg-blue-600 hover:bg-blue-800" href="{% url 'register' %}">Register</a></p>
                 </div>
                 {% endif %}
@@ -55,7 +58,7 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        <section class="pt-8 mx-16">
+        <section >
             {% block content %}
             
             {% endblock content %}

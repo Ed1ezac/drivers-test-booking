@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
+{% load search_user %}
+
 {% block content %}
-    <!--- Header --->
+<!--- Header --->
+<section class="pt-8 px-16">
     <div class="bg-white flex flex-col divide-y divide-gray-300 rounded shadow mb-8 max-w-5xl">
         <div class="flex justify-between p-4">
             <div class="flex items-center">
@@ -46,7 +49,7 @@
                 <a class="tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'my_dates' %}">My Tests</a>
             </div>
             <div class="bg-gray-50 text-center py-2">
-                <a class=" tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'new_date' %}">My Test Results</a>
+                <a class=" tracking-wide text-gray-600 hover:text-blue-500" href="{% url 'notifications' %}">Notifications</a>
             </div>
         </div>
         {% endif %}
@@ -82,7 +85,6 @@
                 <div class="flex justify-between items-baseline space-x-4">
                     <div class="text-xs font-bold text-gray-600">
                         {{ date.get_test_type_display }} Test
-                        
                     </div>
                     <div>
                         {% for app in date.testapplication_set.all %}
@@ -101,10 +103,12 @@
                         <!-- Registration --->
                         {% if user.status == 'F' and date.test_type == user.progress %}
                             {% if date.testapplication_set.all|length < date.max_candidates %}
-                                <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
+                                    <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
                             {% endif %}
                         {% endif %}
                         
+                        {{ user_has_applied_for_test date user }}
+
                         {% if perms.test_dates.delete_testdate %}
                         <a class="mx-2 text-gray-600 font-medium hover:text-blue-600" href="{% url 'edit_date' date.pk %}">Edit</a>
                         <a class="mx-2 text-gray-600 font-medium hover:text-blue-600"href="{% url 'delete_date' date.pk %}">Delete</a>        
@@ -116,5 +120,5 @@
     {% else %}
         <p class="mt-24 text-lg text-center text-gray-600">No Test Dates available...</p>
     {% endif %}
-
+</section>
 {% endblock content %}

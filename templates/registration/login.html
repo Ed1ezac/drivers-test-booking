@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
-{% block content %}
-    <h2 class="text-3xl text-center font-semibold mb-8">Log In</h2>
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="flex mx-auto max-w-md">
-            <div class="flex flex-col w-full space-y-4">
-                {{ form }}
-                <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Log In</button>    
+{% block styles %}
+    {% load static %}
+    <style>
+        .org-img{
+            background-image: url({% static "signs.jpg" %});
+        }
+    </style>
+{% endblock %}   
+
+{% block content %}
+
+<section class="org-img h-full">
+    <div class="bg-black bg-opacity-20 w-full h-full pt-8 px-16 ">
+        <h2 class="text-3xl text-center font-semibold text-white mb-8">Log In</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex mx-auto max-w-md">
+                <div class="flex flex-col w-full space-y-4">
+                    {{ form }}
+                    <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Log In</button>    
+                </div>
             </div>
-        </div>
-        
-    </form>
+            
+        </form>
+    </div>
+    
+
+</section>
 {% endblock content %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<section class="pt-8 px-16">
 <h1 class="text-xl text-center font-semibold mb-6">Edit Test Date</h1>
 
 <form method="post">{% csrf_token %}
@@ -12,5 +12,5 @@
         </div>
     </div>
 </form>
-
+</section>
 {% endblock content %}
