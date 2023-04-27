@@ -41,10 +41,10 @@
                             {% if perms.test_dates.delete_testdate %}
                                 {% if item.testresult  %}
                                 <div class="flex space-x-2">
-                                    {% if item.testresult.test_result != 'P' %}
+                                    {% if item.testresult.test_result != 'P' and item.testresult.test_result == 'X'  %}
                                     <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-green-600 hover:border-green-400 hover:text-white" href="{% url 'pass_app' item.pk %}">Pass</a>
                                     {% endif %}
-                                    {% if item.testresult.test_result != 'F' %}
+                                    {% if item.testresult.test_result != 'F' and item.testresult.test_result == 'X' %}
                                     <a class="border border-gray-300 py-0.5 px-3 text-xs font-medium hover:bg-red-600 hover:border-red-400 hover:text-white" href="{% url 'fail_app' item.pk %}">Fail</a>
                                     {% endif %}
                                 </div>
