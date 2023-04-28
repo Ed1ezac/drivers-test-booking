@@ -13,6 +13,8 @@ class DatesListView(LoginRequiredMixin, ListView):
     template_name = 'test_dates/dates_list.html'
 
     def get_context_data(self,*args, **kwargs):
+        #self.request.user.status = 'F'
+        #self.request.user.save()
         context = super(DatesListView, self).get_context_data(*args,**kwargs)
         unread_notifications = Notification.objects.filter(user=self.request.user, is_read=False).count()
         context["unread_notifications"] = unread_notifications

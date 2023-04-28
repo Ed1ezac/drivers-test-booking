@@ -80,11 +80,13 @@ def approve_candidate(request, pk):
 def delete_candidate_application(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.user.status = 'F'
+    app.user.save()
     #delete the results
     res = TestResult.objects.filter(user=app.user, application = app)
     if res is not None:
         res.delete()
     app.delete()
+    Notification.objects.create(user=app.user, message="Your Test booking has been rejected!")
     messages.error(request, 'Application has been deleted.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 

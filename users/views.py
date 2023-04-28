@@ -5,7 +5,7 @@ from django.views.generic import CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CustomUserCreationForm
-from .models import Notification
+from .models import Notification, CustomUser
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -13,14 +13,16 @@ class SignUpView(CreateView):
     template_name = 'registration/register.html'
     
     def form_valid(self, form):
-        response = super().form_valid(form)  #save user
-        # add self.object to the group
+        self.object = form.save()
+        #add self.object to the group
         client_group, created = Group.objects.get_or_create(name="Client")
         self.object.groups.add(client_group)
-        self.status = 'F' #for FREE
-        #Progress, Notification
-        self.progress = '1'
-        return response
+        self.object.status = 'F' #for Free/available
+        #Progress,
+        self.object.progress = '1'
+        self.object.save()
+        return super(SignUpView, self).form_valid(form)  #save user
+
 
 class NotificationListView(LoginRequiredMixin, ListView):
     model = Notification

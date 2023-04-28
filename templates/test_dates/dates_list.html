@@ -25,6 +25,7 @@
                     {% endif %}
                 </div>
             </div>
+            {% if not perms.test_dates.view_testdate %}
             <div class="flex justify-center flex-col">
                 <p class="text-gray-500 text-xs">Progress,</p>
                 <h3 class="font-medium text-2xl">{{ user.get_progress_display }}</h3>
@@ -34,6 +35,7 @@
                 <p class="text-gray-500 text-xs">Congratulations Driver!</p>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
         {% if perms.test_dates.add_testdate %}
         <div class="grid grid-cols-3 divide-x divide-gray-300">
@@ -57,7 +59,6 @@
             </div>
         </div>
         {% endif %}
-        
     </div>
     {% if object_list %}
         {% for date in object_list %}
@@ -105,13 +106,15 @@
                             {% endif %}
                         {% endfor %}
                         <!-- Registration --->
-                        {% if user.status == 'F' and date.test_type == user.progress %}
-                            {% if date.testapplication_set.all|length < date.max_candidates %}
-                                    {% user_has_applied_for_test date user as num %}
-                                    {% if num != 1 %}
-                                    <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
-                                    {% endif %}    
-                                {% endif %}
+                        {% if not perms.test_dates.view_testdate %}
+                            {% if user.status == 'F' and date.test_type == user.progress %}
+                                {% if date.testapplication_set.all|length < date.max_candidates %}
+                                        {% user_has_applied_for_test date user as num %}
+                                        {% if num != 1 %}
+                                        <a class="mx-2 text-gray-600 font-semibold hover:text-blue-600" href="{% url 'book_test' date.pk %}">Register</a>
+                                        {% endif %}    
+                                    {% endif %}
+                            {% endif %}
                         {% endif %}
 
                         {% if perms.test_dates.delete_testdate %}
