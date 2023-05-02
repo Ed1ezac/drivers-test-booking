@@ -12,21 +12,34 @@
 {% block content %}
 
 <section class="org-img h-full">
-    <div class="bg-black bg-opacity-20 w-full h-full pt-8 px-16 ">
-        <h2 class="text-3xl text-center font-semibold text-white mb-8">Log In</h2>
+    <div class="flex flex-col bg-black bg-opacity-20 w-full h-full pt-8 px-16 ">
+            <h2 class="text-3xl text-center font-semibold text-white mb-8">Log In</h2>
+        
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex justify-center items-center">
+                    <div class="bg-white w-96 rounded px-8 py-12">
+                        <div class="flex flex-col w-full space-y-4">
+                            {{ form }}
+                            <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Log In</button>    
+                        </div>
+                    </div>
 
-        <form method="post">
-            {% csrf_token %}
-            <div class="flex mx-auto max-w-md">
-                <div class="flex flex-col w-full space-y-4">
-                    {{ form }}
-                    <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Log In</button>    
+                    <div class=" ml-16 mt-6 flex justify-center">
+                        <div class="bg-white rounded-lg p-8 max-w-md">
+                            <h3 class="font-bold">Easy Steps</h3>
+                            <ul class="list-disc">
+                                <li class="text-gray-500 text-sm mt-3 font-semibold">Register/Login</li>
+                                <li class="text-gray-500 text-sm mt-3 font-semibold">Browse Test Dates</li>
+                                <li class="text-gray-500 text-sm mt-3 font-semibold">Apply for a Test Date</li>
+                                <li class="text-gray-500 text-sm mt-3 font-semibold">Get notified about your Test Date application</li>
+                            </ul>
+                            
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-        </form>
+            </form>
     </div>
     
-
 </section>
 {% endblock content %}

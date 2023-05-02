@@ -2,14 +2,61 @@
 
 {% block content %}
 
-<div class="flex justify-start">
-
+<div class="flex justify-start px-16 pt-6">
+    <a href="{% url 'new_groups' %}" class="text-xs text-white font-semibold hover:border-blue-500 bg-blue-600 hover:bg-blue-800 px-3 py-1.5">Refresh User Groups</a>
 </div>
 
-<div>
-    <table>
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-</div>
+<section class="pt-8 px-16">
+    <div class="bg-white rounded max-w-4xl shadow">
+        <table class="table-auto w-full">
+            <thead class="bg-gray-50">
+                <th class="py-3 px-4 text-sm text-left text-gray-800 font-semibold rounded-tl">User</th>
+                <th class="py-3 text-sm text-left text-gray-800 font-semibold">Progress</th>
+                <th class="py-3 text-sm text-left text-gray-800 font-semibold">Role</th>
+                <th class="py-3 px-4 text-sm text-left text-gray-800 font-semibold rounded-tr">Actions</th>
+            </thead>
+            <tbody class="">
+                {% for user in object_list %}
+                <tr>
+                    <td class="py-3 px-4">
+                        <h3 class="font-semibold text-sm text-gray-900">{{ user.username }}</h3>
+                        <div class="text-gray-400 text-xs">{{ user.email }}</div>
+                    </td>
+                    <td class="text-xs text-gray-600 font-medium">                        
+                        {% if 'test_dates.add_testdate' in user.get_all_permissions %}
+                        N/A
+                        {% else %}
+                        Stage {{ user.progress }}
+                        {% endif %}
+                    </td>
+                    <td class="text-xs text-gray-600 font-medium">
+                        {% if 'test_dates.delete_testdate' in user.get_all_permissions %}
+                        Administrator
+                        {% elif 'test_dates.add_testdate' in user.get_all_permissions %}
+                        Officer
+                        {% else %}    
+                        Client
+                        {% endif %}
+                    </td>
+                    <td class="text-xs text-gray-600 font-medium">
+                        <div class="row">
+                            {% if 'test_dates.delete_testdate' not in user.get_all_permissions and 'test_dates.add_testdate' not in user.get_all_permissions %}
+                            <a href="{% url 'mk_admin' user.pk %}" class="border text-xs border-gray-600 hover:text-white hover:border-yellow-300 hover:bg-yellow-500 px-2 py-1">Make Admin</a>
+                            <a href="{% url 'mk_officer' user.pk %}" class="border border-gray-600 hover:text-white text-xs hover:bg-blue-600 hover:border-blue-600 px-2 py-1">Make Officer</a>
+                            {% elif 'test_dates.delete_testdate' in user.get_all_permissions %}
+                            <a href="{% url 'mk_officer' user.pk %}" class="border border-gray-600 hover:text-white text-xs hover:bg-blue-600 hover:border-blue-600 px-2 py-1">Make Officer</a>
+                            <a href="{% url 'mk_client' user.pk %}" class="border border-gray-600 hover:text-white text-xs hover:bg-gray-500 px-2 py-1">Make Client</a>
+                            {% else %}
+                            <a href="{% url 'mk_admin' user.pk %}" class="border text-xs border-gray-600 hover:text-white hover:border-yellow-300 hover:bg-yellow-500 px-2 py-1">Make Admin</a>
+                            <a href="{% url 'mk_client' user.pk %}" class="border border-gray-600 hover:text-white text-xs hover:bg-gray-500 px-2 py-1">Make Client</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+</section>
 {% endblock content %}
