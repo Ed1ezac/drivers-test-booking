@@ -42,6 +42,9 @@ class TestApplication(models.Model):
     def create(cls, user, test, status):
         application = cls(user = user, test = test, application_status = status)
         return application
+    
+    def __str__(self):
+        return self.user.username + ' - ' + self.test.location +' - '+ self.test.date_and_time.strftime('%d %b %Y - %H:%M %p')
 
 class TestResult(models.Model):
     RESULTS = [
@@ -58,3 +61,9 @@ class TestResult(models.Model):
     def create(cls, user, test, res):
         application = cls(user = user, test = test, test_result = res)
         return application
+
+    def __str__(self):
+        return (self.user.username + ' - ' + 
+            self.application.test.location +' - '+ 
+            self.application.test.date_and_time.strftime('%d %b %Y - %H:%M %p')+ ' : '+ 
+            dict(self.RESULTS).get(self.test_result))

@@ -23,3 +23,6 @@ class Notification(models.Model):
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username +' - ' + self.message + (" : Read ") if self.is_read  else " : Unread"
