@@ -4,29 +4,29 @@
     {% load static %}
     <style>
         .org-img{
-            background-image: url({% static "drive-sf.jpg" %});
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: 290px 260px;
-            background-position: right top; 
+            background-image: url({% static "road.jpg" %});
+            background-repeat: repeat-y;
+            background-position: center top;
+            background-size: contain;
         }
     </style>
 {% endblock %}
 
 {% block content %}
-<section class="pt-8 px-16 org-img">
-    <div>
-        <h2 class="text-3xl text-center font-semibold mb-8">Register</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="flex mx-auto max-w-md mb-48">
-                <div class="flex flex-col w-full space-y-4">
-                    {{ form }}
-                    <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Register</button>
+<section class="w-screen org-img">
+    <div class="flex pt-8 px-16 flex-col bg-white bg-opacity-30">
+        <div>
+            <h2 class="text-3xl text-center font-semibold mb-8">Register</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex mx-auto max-w-md ">
+                    <div class="flex flex-col w-full space-y-4">
+                        {{ form }}
+                        <button class="bg-blue-600 hover:bg-blue-800 text-white px-8 py-1.5" type="submit">Register</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-    
 </section>
 {% endblock content %}

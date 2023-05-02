@@ -4,6 +4,7 @@ from django.views.generic import DetailView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import (AccessMixin,
     LoginRequiredMixin, PermissionRequiredMixin)
@@ -65,6 +66,13 @@ class DeleteTestDate(LoginRequiredMixin,
         messages.error(self.request, 'Sorry, you are not authorized for that.')
         return HttpResponseRedirect(self.request.META.get('HTTP_REFERER', '/dates'))
 
+def has_officer_privileges(user):
+    return user.is_authenticated and user.has_perm("test_dates.add_testdate")
+
+def has_admin_privileges(user):
+    return user.is_authenticated and user.has_perm("test_dates.delete_testdate")
+
+@user_passes_test(has_officer_privileges, login_url="/login")
 def approve_candidate(request, pk):
     #user->test_applications->appove
     app = TestApplication.objects.get(id=pk)
@@ -77,6 +85,7 @@ def approve_candidate(request, pk):
     messages.success(request, app.user.username +' has been approved for the test.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
+@user_passes_test(has_admin_privileges, login_url="/login")
 def delete_candidate_application(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.user.status = 'F'
@@ -90,7 +99,7 @@ def delete_candidate_application(request, pk):
     messages.error(request, 'Application has been deleted.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
-
+@user_passes_test(has_officer_privileges, login_url="/login")
 def reject_candidate(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.application_status = 'R'
@@ -104,6 +113,7 @@ def reject_candidate(request, pk):
     Notification.objects.create(user=app.user, message="Your Test booking has been rejected!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
+@user_passes_test(has_admin_privileges, login_url="/login")
 def add_result_pass(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.testresult.test_result = 'P'
@@ -123,7 +133,7 @@ def add_result_pass(request, pk):
     Notification.objects.create(user=app.user, message="Congratulations! You have passed the test!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
     
-
+@user_passes_test(has_admin_privileges, login_url="/login")
 def add_result_fail(request, pk):
     app = TestApplication.objects.get(id=pk)
     app.testresult.test_result = 'F'
@@ -136,6 +146,7 @@ def add_result_fail(request, pk):
     Notification.objects.create(user=app.user, message="You have failed the test!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
 
+@user_passes_test(has_admin_privileges, login_url="/login")
 def create_groups_and_perms(request):
     #groups
     client, created = Group.objects.get_or_create(name="Client")
@@ -145,14 +156,14 @@ def create_groups_and_perms(request):
     content_type = ContentType.objects.get_for_model(TestDate)
     test_date_perms = Permission.objects.filter(content_type=content_type)
 
-    print([perm.codename for perm in test_date_perms])
+    #print([perm.codename for perm in test_date_perms])
 
     for perm in test_date_perms:
-        if (perm.codename == "add_testdate" or 
-            perm.codename == "delete_testdate"):
+        if  perm.codename == "delete_testdate":
             administrator.permissions.add(perm)
 
-        elif perm.codename == "view_testdate":
+        elif (perm.codename == "add_testdate" or 
+            perm.codename == "view_testdate"):
             officer.permissions.add(perm)
             administrator.permissions.add(perm)
 
@@ -163,7 +174,3 @@ def create_groups_and_perms(request):
 
     messages.success(request, 'Groups and permissions added successfully.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/dates'))
-
-#In template
-#{{ user.groups }}
-#{{ perms.app_name }}
